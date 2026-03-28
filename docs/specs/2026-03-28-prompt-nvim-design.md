@@ -58,7 +58,7 @@ All logic lives in the plugin. No external shell scripts to install or maintain.
 1. **Prompt buffer management** — creates scratch buffers with appropriate settings (wrap, filetype, insert mode), tracks whether the buffer was written
 2. **SQLite interface** — shells out to `sqlite3` CLI for all DB operations. No compiled Lua dependencies.
 3. **Clipboard integration** — detects platform clipboard tool (`pbcopy`, `xclip`, `wl-copy`, or Neovim's `vim.fn.setreg('+', ...)`) and copies prompt content on save+quit
-4. **Snacks.nvim picker integration** — provides search source for the picker with preview support
+4. **Picker integration** — Snacks.nvim picker with preview as primary search UI, falls back to `vim.ui.select` for users without Snacks
 
 ### Storage
 
@@ -70,7 +70,7 @@ All logic lives in the plugin. No external shell scripts to install or maintain.
 ### Dependencies
 
 - `sqlite3` CLI — present on virtually all systems
-- Snacks.nvim — already shipped with AstroVim
+- Snacks.nvim — optional, used for rich picker with preview. Falls back to `vim.ui.select` if unavailable
 - System clipboard tool — `pbcopy` (macOS), `xclip` or `wl-copy` (Linux), or Neovim's built-in clipboard support
 
 No other dependencies. No build step. No compiled extensions.
@@ -82,13 +82,13 @@ No other dependencies. No build step. No compiled extensions.
 | Command | Description |
 |---------|-------------|
 | `:PromptNew` | Open empty buffer for a new prompt |
-| `:PromptSearch` | Open Snacks picker to search prompt history, selected prompt opens in buffer |
+| `:PromptSearch` | Open picker (Snacks if available, else `vim.ui.select`) to search prompt history, selected prompt opens in buffer |
 
 ### Keybindings
 
 | Keybinding | Mode | Description |
 |------------|------|-------------|
-| `<leader>fP` | Normal | Open Snacks picker, insert selected prompt at cursor |
+| `<leader>fP` | Normal | Open picker, insert selected prompt at cursor |
 
 ### Save/Quit Behavior
 
