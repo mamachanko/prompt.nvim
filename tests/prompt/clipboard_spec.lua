@@ -1,0 +1,25 @@
+local clipboard = require("prompt.clipboard")
+
+describe("prompt.clipboard", function()
+  before_each(function()
+    clipboard._reset()
+  end)
+
+  it("detects a clipboard method without error", function()
+    local method = clipboard.detect()
+    assert.is_not_nil(method)
+    assert.is_true(vim.tbl_contains({ "pbcopy", "xclip", "xsel", "wl-copy", "neovim" }, method))
+  end)
+
+  it("copies text without error", function()
+    assert.has_no.errors(function()
+      clipboard.copy("test prompt content")
+    end)
+  end)
+
+  it("caches the detection result", function()
+    local first = clipboard.detect()
+    local second = clipboard.detect()
+    assert.are.equal(first, second)
+  end)
+end)
