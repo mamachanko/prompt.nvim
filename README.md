@@ -63,4 +63,4 @@ Press `<leader>fP` in normal mode → search → selected prompt inserted at cur
 
 ## License
 
-MIT
+Apache 2.0
