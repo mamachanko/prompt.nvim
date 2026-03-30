@@ -20,7 +20,7 @@ A Neovim plugin for managing AI agent prompts. Write prompts in Neovim, store th
 
 ```lua
 {
-  "youruser/prompt.nvim",
+  "mamachanko/prompt.nvim",
   opts = {},
   -- optional: for rich picker with preview
   dependencies = { "folke/snacks.nvim" },
