@@ -43,10 +43,6 @@ local function pick_with_snacks(prompts, opts)
       local lines = vim.split(p.body, "\n")
       ctx.preview:set_lines(lines)
       ctx.preview:highlight({ ft = "markdown" })
-      local preview_win = ctx.preview.win or ctx.preview.winid
-      if type(preview_win) == "number" and vim.api.nvim_win_is_valid(preview_win) then
-        vim.wo[preview_win].wrap = true
-      end
     end,
     confirm = function(picker, item)
       picker:close()
@@ -64,6 +60,13 @@ local function pick_with_snacks(prompts, opts)
     end,
     title = "Prompt History",
     layout = { preset = "default" },
+    win = {
+      preview = {
+        wo = {
+          wrap = true,
+        },
+      },
+    },
   })
 end
 
