@@ -21,8 +21,7 @@ end
 
 --- Open picker using Snacks.nvim
 ---@param prompts table[] list of prompt rows
----@param opts {mode: "buffer"|"insert"}
-local function pick_with_snacks(prompts, opts)
+local function pick_with_snacks(prompts)
   local items = {}
   for i, p in ipairs(prompts) do
     items[i] = {
@@ -50,13 +49,7 @@ local function pick_with_snacks(prompts, opts)
         return
       end
       local p = item.item
-      if opts.mode == "insert" then
-        local lines = vim.split(p.body, "\n")
-        local row = vim.api.nvim_win_get_cursor(0)[1]
-        vim.api.nvim_buf_set_lines(0, row, row, false, lines)
-      else
-        require("prompt.buffer").open_with_content(p.body, p.id)
-      end
+      require("prompt.buffer").open_with_content(p.body, p.id)
     end,
     title = "Prompt History",
     layout = { preset = "default" },
@@ -65,8 +58,7 @@ end
 
 --- Open picker using vim.ui.select fallback
 ---@param prompts table[] list of prompt rows
----@param opts {mode: "buffer"|"insert"}
-local function pick_with_ui_select(prompts, opts)
+local function pick_with_ui_select(prompts)
   vim.ui.select(prompts, {
     prompt = "Prompt History: ",
     format_item = function(item)
@@ -76,21 +68,12 @@ local function pick_with_ui_select(prompts, opts)
     if not selected then
       return
     end
-    if opts.mode == "insert" then
-      local lines = vim.split(selected.body, "\n")
-      local row = vim.api.nvim_win_get_cursor(0)[1]
-      vim.api.nvim_buf_set_lines(0, row, row, false, lines)
-    else
-      require("prompt.buffer").open_with_content(selected.body, selected.id)
-    end
+    require("prompt.buffer").open_with_content(selected.body, selected.id)
   end)
 end
 
 --- Search prompt history and open picker
----@param opts? {mode?: "buffer"|"insert"}
-function M.search(opts)
-  opts = opts or {}
-  opts.mode = opts.mode or "buffer"
+function M.search()
 
   local config = require("prompt").config
   if not config.db_path then
@@ -108,9 +91,9 @@ function M.search(opts)
   end
 
   if M.has_snacks() then
-    pick_with_snacks(prompts, opts)
+    pick_with_snacks(prompts)
   else
-    pick_with_ui_select(prompts, opts)
+    pick_with_ui_select(prompts)
   end
 end
 
