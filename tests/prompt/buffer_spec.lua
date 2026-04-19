@@ -1,10 +1,16 @@
 local buffer = require("prompt.buffer")
 
 describe("prompt.buffer", function()
+  local test_db
+
   before_each(function()
-    local test_db = "/tmp/test_prompts.db"
+    test_db = vim.fn.tempname() .. "_prompt_buffer.db"
     os.remove(test_db)
     require("prompt.db").setup(test_db)
+  end)
+
+  after_each(function()
+    os.remove(test_db)
   end)
 
   it("creates a scratch buffer with correct options", function()

@@ -9,13 +9,16 @@ function M.detect()
     return method_cache
   end
 
+  local has_wayland = vim.env.WAYLAND_DISPLAY ~= nil or vim.env.WAYLAND_SOCKET ~= nil
+  local has_x11 = vim.env.DISPLAY ~= nil
+
   if vim.fn.executable("pbcopy") == 1 then
     method_cache = "pbcopy"
-  elseif vim.fn.executable("wl-copy") == 1 then
+  elseif has_wayland and vim.fn.executable("wl-copy") == 1 then
     method_cache = "wl-copy"
-  elseif vim.fn.executable("xclip") == 1 then
+  elseif has_x11 and vim.fn.executable("xclip") == 1 then
     method_cache = "xclip"
-  elseif vim.fn.executable("xsel") == 1 then
+  elseif has_x11 and vim.fn.executable("xsel") == 1 then
     method_cache = "xsel"
   else
     method_cache = "neovim"

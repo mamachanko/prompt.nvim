@@ -75,13 +75,12 @@ end
 ---@param cwd string|nil
 ---@return number id
 function M.insert(body, cwd)
-  run(string.format(
-    "INSERT INTO prompts (body, cwd) VALUES ('%s', '%s');",
+  local raw = exec(vim.fn.shellescape(string.format(
+    "INSERT INTO prompts (body, cwd) VALUES ('%s', '%s'); SELECT last_insert_rowid();",
     escape(body),
     escape(cwd or "")
-  ))
-  local raw = exec(vim.fn.shellescape("SELECT last_insert_rowid();"))
-  return tonumber(raw) or 0
+  )))
+  return tonumber((raw or ""):match("%d+")) or 0
 end
 
 --- Get a prompt by ID
