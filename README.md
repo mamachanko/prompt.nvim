@@ -75,7 +75,7 @@ make check
 Requirements:
 
 - `make lint` expects `stylua` and `luacheck` to already be installed
-- `make test` expects `nvim` to be installed
+- `make test` expects `nvim` and `sqlite3` to be installed
 - `make test` and `make check` require `PLENARY_DIR` to point to your local `plenary.nvim` checkout
 
 ## License
