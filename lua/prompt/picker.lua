@@ -74,7 +74,6 @@ end
 
 --- Search prompt history and open picker
 function M.search()
-
   local config = require("prompt").config
   if not config.db_path then
     require("prompt").setup()
