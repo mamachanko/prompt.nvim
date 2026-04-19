@@ -19,7 +19,5 @@ jobs:
           mkdir -p ~/.local/share/nvim/lazy
           git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/lazy/plenary.nvim
       - name: Run tests
-        env:
-          PLENARY_DIR: ~/.local/share/nvim/lazy/plenary.nvim
         run: |
-          make test
+          PLENARY_DIR="$HOME/.local/share/nvim/lazy/plenary.nvim" make test

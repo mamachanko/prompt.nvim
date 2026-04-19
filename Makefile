@@ -15,5 +15,6 @@ check-lint-tools:
 
 check-test-tools:
 	@command -v nvim >/dev/null 2>&1 || { echo "Error: nvim is required for 'make test'. Install Neovim, then rerun 'make test'."; exit 1; }
+	@command -v sqlite3 >/dev/null 2>&1 || { echo "Error: sqlite3 is required for 'make test'. Install sqlite3, then rerun 'make test'."; exit 1; }
 	@test -n "$(PLENARY_DIR)" || { echo "Error: PLENARY_DIR must point to your plenary.nvim checkout for 'make test'. Example: export PLENARY_DIR=~/.local/share/nvim/lazy/plenary.nvim"; exit 1; }
 	@test -d "$(PLENARY_DIR)" || { echo "Error: PLENARY_DIR points to a missing directory: $(PLENARY_DIR)"; exit 1; }
