@@ -11,5 +11,5 @@ end, { desc = "Create a new prompt" })
 
 vim.api.nvim_create_user_command("PromptSearch", function()
   require("prompt").setup()
-  require("prompt.picker").search({ mode = "buffer" })
+  require("prompt.picker").search()
 end, { desc = "Search prompt history" })

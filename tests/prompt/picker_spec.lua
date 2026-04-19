@@ -56,4 +56,41 @@ describe("prompt.picker", function()
     local display = picker.format_item(item)
     assert.is_not_nil(display)
   end)
+
+  it("opens the selected prompt in a prompt buffer even when legacy insert opts are passed", function()
+    require("prompt").setup({ db_path = test_db })
+
+    local db = require("prompt.db")
+    local prompt_id = db.insert("picked prompt", "/tmp")
+
+    local original_select = vim.ui.select
+    local original_has_snacks = picker.has_snacks
+    local buffer = require("prompt.buffer")
+    local original_open = buffer.open_with_content
+    local opened = nil
+
+    vim.cmd("enew")
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, { "current buffer" })
+
+    vim.ui.select = function(items, _, on_choice)
+      on_choice(items[1])
+    end
+    picker.has_snacks = function()
+      return false
+    end
+    buffer.open_with_content = function(body, id)
+      opened = { body = body, id = id }
+    end
+
+    picker.search({ mode = "insert" })
+
+    local current_lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+
+    buffer.open_with_content = original_open
+    picker.has_snacks = original_has_snacks
+    vim.ui.select = original_select
+
+    assert.are.same({ "current buffer" }, current_lines)
+    assert.are.same({ body = "picked prompt", id = prompt_id }, opened)
+  end)
 end)
