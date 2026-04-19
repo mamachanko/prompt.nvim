@@ -22,4 +22,4 @@ jobs:
         env:
           PLENARY_DIR: ~/.local/share/nvim/lazy/plenary.nvim
         run: |
-          nvim --headless -u tests/minimal_init.lua -c "PlenaryBustedDirectory tests/ {minimal_init = 'tests/minimal_init.lua'}"
+          make test

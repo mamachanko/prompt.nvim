@@ -75,11 +75,15 @@ end
 ---@param cwd string|nil
 ---@return number id
 function M.insert(body, cwd)
-  local raw = exec(vim.fn.shellescape(string.format(
-    "INSERT INTO prompts (body, cwd) VALUES ('%s', '%s'); SELECT last_insert_rowid();",
-    escape(body),
-    escape(cwd or "")
-  )))
+  local raw = exec(
+    vim.fn.shellescape(
+      string.format(
+        "INSERT INTO prompts (body, cwd) VALUES ('%s', '%s'); SELECT last_insert_rowid();",
+        escape(body),
+        escape(cwd or "")
+      )
+    )
+  )
   return tonumber((raw or ""):match("%d+")) or 0
 end
 
@@ -98,10 +102,14 @@ end
 ---@param term string
 ---@return table[]
 function M.search(term)
-  return query(string.format(
-    "SELECT p.id, p.body, p.created_at, p.cwd FROM prompts p INNER JOIN prompts_fts f ON p.id = f.rowid WHERE prompts_fts MATCH '%s' ORDER BY p.id DESC;",
-    escape(term)
-  ))
+  return query(
+    string.format(
+      "SELECT p.id, p.body, p.created_at, p.cwd "
+        .. "FROM prompts p INNER JOIN prompts_fts f ON p.id = f.rowid "
+        .. "WHERE prompts_fts MATCH '%s' ORDER BY p.id DESC;",
+      escape(term)
+    )
+  )
 end
 
 --- Return all prompts, most recent first
@@ -114,10 +122,7 @@ end
 ---@param body string
 ---@return boolean
 function M.exists(body)
-  local raw = exec(vim.fn.shellescape(string.format(
-    "SELECT COUNT(*) FROM prompts WHERE body = '%s';",
-    escape(body)
-  )))
+  local raw = exec(vim.fn.shellescape(string.format("SELECT COUNT(*) FROM prompts WHERE body = '%s';", escape(body))))
   return tonumber(raw) ~= nil and tonumber(raw) > 0
 end
 
