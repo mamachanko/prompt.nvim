@@ -1,10 +1,16 @@
 local picker = require("prompt.picker")
 
 describe("prompt.picker", function()
+  local test_db
+
   before_each(function()
-    local test_db = "/tmp/test_prompts.db"
+    test_db = vim.fn.tempname() .. "_prompt_picker.db"
     os.remove(test_db)
     require("prompt.db").setup(test_db)
+  end)
+
+  after_each(function()
+    os.remove(test_db)
   end)
 
   it("has a search function", function()
