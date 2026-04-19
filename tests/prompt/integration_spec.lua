@@ -27,13 +27,24 @@ describe("prompt.nvim integration", function()
     assert.is_not_nil(commands["PromptSearch"])
   end)
 
+  it("does not install a default normal-mode mapping", function()
+    local prompt_mapping = nil
+    for _, map in ipairs(vim.api.nvim_get_keymap("n")) do
+      if map.lhs == "\\fP" or map.desc == "Find and insert a prompt" then
+        prompt_mapping = map
+        break
+      end
+    end
+    assert.is_nil(prompt_mapping)
+  end)
+
   it("PromptNew creates a buffer with correct filetype", function()
     vim.cmd("PromptNew")
     local bufnr = vim.api.nvim_get_current_buf()
     assert.are.equal("markdown", vim.bo[bufnr].filetype)
   end)
 
-  it("full cycle: setup creates DB, insert works, search finds it", function()
+  it("full cycle: setup creates DB and search finds it", function()
     local db = require("prompt.db")
     db.insert("integration test prompt", "/tmp")
     local results = db.search("integration")

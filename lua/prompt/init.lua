@@ -2,10 +2,8 @@ local M = {}
 
 ---@class prompt.Config
 ---@field db_path? string path to SQLite database (default: ~/.prompts.db)
----@field keymap? string keymap for insert-from-picker (default: <leader>fP)
 local defaults = {
   db_path = vim.fn.expand("~/.prompts.db"),
-  keymap = "<leader>fP",
 }
 
 M.config = {}
@@ -29,13 +27,8 @@ function M.setup(opts)
   end, { force = true, desc = "Create a new prompt" })
 
   vim.api.nvim_create_user_command("PromptSearch", function()
-    require("prompt.picker").search({ mode = "buffer" })
+    require("prompt.picker").search()
   end, { force = true, desc = "Search prompt history" })
-
-  -- Keybinding for insert-from-picker
-  vim.keymap.set("n", M.config.keymap, function()
-    require("prompt.picker").search({ mode = "insert" })
-  end, { desc = "Find and insert a prompt" })
 end
 
 return M
