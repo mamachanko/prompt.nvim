@@ -1,5 +1,7 @@
 # prompt.nvim Implementation Plan
 
+> **Historical note (2026-04-19):** This document predates the keymap simplification. `prompt.nvim` no longer installs a default `<leader>fP` mapping or supports insert-from-picker. Use `:PromptSearch` and define any keymaps in your own config.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** A Neovim plugin that manages AI agent prompts — write in Neovim, store in SQLite with FTS, auto-copy to clipboard on save, search via Snacks.nvim picker with `vim.ui.select` fallback.

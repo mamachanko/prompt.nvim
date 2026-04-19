@@ -6,7 +6,6 @@ A Neovim plugin for managing AI agent prompts. Write prompts in Neovim, store th
 
 - **`:PromptNew`** — open a buffer, write a prompt, save+quit → clipboard + stored
 - **`:PromptSearch`** — fuzzy search prompt history, pick one → opens in buffer for review/edit
-- **`<leader>fP`** — search and insert an old prompt into your current buffer
 
 ## Requirements
 
@@ -21,9 +20,14 @@ A Neovim plugin for managing AI agent prompts. Write prompts in Neovim, store th
 ```lua
 {
   "mamachanko/prompt.nvim",
+  dependencies = { "folke/snacks.nvim" }, -- optional
   opts = {},
-  -- optional: for rich picker with preview
-  dependencies = { "folke/snacks.nvim" },
+  config = function(_, opts)
+    require("prompt").setup(opts)
+    vim.keymap.set("n", "<leader>fp", "<cmd>PromptSearch<CR>", {
+      desc = "Find prompts",
+    })
+  end,
 }
 ```
 
@@ -32,7 +36,6 @@ A Neovim plugin for managing AI agent prompts. Write prompts in Neovim, store th
 ```lua
 require("prompt").setup({
   db_path = "~/.prompts.db", -- default
-  keymap = "<leader>fP",      -- default
 })
 ```
 
@@ -57,9 +60,14 @@ ps
 
 Fuzzy search → pick a prompt → review/edit in buffer → `:wq` → clipboard.
 
-### Insert from picker (mid-edit)
+### Optional keymaps
 
-Press `<leader>fP` in normal mode → search → selected prompt inserted at cursor.
+```lua
+vim.keymap.set("n", "<leader>fp", "<cmd>PromptSearch<CR>", { desc = "Find prompts" })
+vim.keymap.set("n", "<leader>fn", "<cmd>PromptNew<CR>", { desc = "New prompt" })
+```
+
+The plugin does not install any default keymaps; choose bindings that fit your own setup.
 
 ## Development
 
