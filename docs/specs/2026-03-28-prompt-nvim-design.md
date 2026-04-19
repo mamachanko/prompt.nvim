@@ -1,5 +1,7 @@
 # prompt.nvim — Design Spec
 
+> **Historical note (2026-04-19):** This document predates the keymap simplification. `prompt.nvim` no longer installs a default `<leader>fP` mapping or supports insert-from-picker. Use `:PromptSearch` and define any keymaps in your own config.
+
 **Date:** 2026-03-28
 
 ## Overview
