@@ -1,19 +1,17 @@
 name: Lint
 on: [push, pull_request]
 jobs:
-  stylua:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: JohnnyMorganz/stylua-action@v4
+      - name: Install stylua
+        uses: taiki-e/install-action@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          version: latest
-          args: --check lua/ plugin/ tests/
-  luacheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: lunarmodules/luacheck@v1
-        with:
-          args: lua/ plugin/
+          tool: stylua
+      - name: Install luacheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua-check
+      - name: Run lint
+        run: make lint

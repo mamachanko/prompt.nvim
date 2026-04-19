@@ -61,6 +61,23 @@ Fuzzy search → pick a prompt → review/edit in buffer → `:wq` → clipboard
 
 Press `<leader>fP` in normal mode → search → selected prompt inserted at cursor.
 
+## Development
+
+Use the canonical local verification targets:
+
+```bash
+make lint
+export PLENARY_DIR=~/.local/share/nvim/lazy/plenary.nvim
+make test
+make check
+```
+
+Requirements:
+
+- `make lint` expects `stylua` and `luacheck` to already be installed
+- `make test` expects `nvim` to be installed
+- `make test` and `make check` require `PLENARY_DIR` to point to your local `plenary.nvim` checkout
+
 ## License
 
 Apache 2.0
